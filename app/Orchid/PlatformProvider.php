@@ -36,9 +36,14 @@ class PlatformProvider extends OrchidServiceProvider
         
             Menu::make('Tasks')
                 ->icon('bag')
-                ->route('platform.task')
+                ->route('test.zlp.task')
                 ->title('Tools'),
-                
+
+            Menu::make('State')
+                ->icon('bag')
+                ->route('test.zlp.state')
+                ->title('Tools'),                
+
             Menu::make('Get Started')
                 ->icon('bs.book')
                 ->title('Navigation')
