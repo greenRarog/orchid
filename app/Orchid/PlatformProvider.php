@@ -27,13 +27,18 @@ class PlatformProvider extends OrchidServiceProvider
     }
 
     /**
-     * Register the application menu.
-     *
      * @return Menu[]
      */
     public function menu(): array
     {
         return [
+            // Other items...
+        
+            Menu::make('Tasks')
+                ->icon('bag')
+                ->route('platform.task')
+                ->title('Tools'),
+                
             Menu::make('Get Started')
                 ->icon('bs.book')
                 ->title('Navigation')
