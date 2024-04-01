@@ -33,16 +33,18 @@ class PlatformProvider extends OrchidServiceProvider
     {
         return [
             // Other items...
-        
+            Menu::make("Posts")
+                ->route("platform.post.list")
+                ->title('Tools'),
+
+
             Menu::make('Tasks')
                 ->icon('bag')
-                ->route('test.zlp.task')
-                ->title('Tools'),
+                ->route('test.zlp.task'),
 
             Menu::make('State')
                 ->icon('bag')
-                ->route('test.zlp.state')
-                ->title('Tools'),                
+                ->route('test.zlp.state'),                
 
             Menu::make('Get Started')
                 ->icon('bs.book')

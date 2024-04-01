@@ -23,6 +23,9 @@ use Tabuna\Breadcrumbs\Trail;
 use App\Orchid\Screens\TaskScreen;
 use App\Orchid\Screens\StateScreen;
 
+use App\Orchid\Screens\PostEditScreen;
+use App\Orchid\Screens\PostListScreen;
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
@@ -121,3 +124,9 @@ Route::screen('state', StateScreen::class)
             ->parent('platform.index')
             ->push('State');
     });    
+
+Route::screen('post/{post?}', PostEditScreen::class)
+    ->name('platform.post.edit');
+
+Route::screen('posts', PostListScreen::class)
+    ->name('platform.post.list');
