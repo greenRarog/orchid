@@ -11,9 +11,10 @@ use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Fields\Upload;
+use Orchid\Screen\Fields\Cropper;
 use Orchid\Support\Facades\Layout;
 use Orchid\Screen\Actions\Button;
-use Orchid\Screen\Facades\Alert;
+use Orchid\Support\Facades\Alert;
 
 
 
@@ -27,8 +28,10 @@ class PostEditScreen extends Screen
      */
     public function query(Post $post): array
     {
+        $post->load('attachment');
+
         return [
-            "post" => $post
+            'post' => $post
         ];
     }
 
@@ -81,34 +84,47 @@ class PostEditScreen extends Screen
     {
         return [
             Layout::rows([
-                Input::make("post.title")
-                    ->title("Title")
-                    ->placeholder("Attaractive but mysterious title")
-                    ->help("Specify a short descriptive for this post."),
+                Input::make('post.title')
+                    ->title('Title')
+                    ->placeholder('Attractive but mysterious title'),
 
-                TextArea::make("post.description")
-                    ->title("Description")
+                Cropper::make('post.hero')
+                    ->targetId()
+                    ->title('Large web banner image, generally in the front and center')
+                    ->width(1000)
+                    ->height(500),
+
+                TextArea::make('post.description')
+                    ->title('Description')
                     ->rows(3)
                     ->maxlength(200)
-                    ->placeholder("Brief description for preview"),
+                    ->placeholder('Brief description for preview'),
 
-                Relation::make("post.author")
-                    ->title("Author")
-                    ->fromModel(User::class, "name"),
+                Relation::make('post.author')
+                    ->title('Author')
+                    ->fromModel(User::class, 'name'),
 
-                Quill::make("post.body")
-                    ->title("Main text"),
+                Quill::make('post.body')
+                    ->title('Main text'),
+
+                Upload::make('post.attachment')
+                    ->title('All files')
+
             ])
         ];
     }
 
     public function createOrUpdate(Request $request)
     {
-        $this->post->fill($request->get("post"))->save();
+        $this->post->fill($request->get('post'))->save();
 
-        Alert::info("You have successfully created a post.");
+        $this->post->attachment()->syncWithoutDetaching(
+            $request->input('post.attachment', [])
+        );
 
-        return redirect()->route("platform.post.list");
+        Alert::info('You have successfully created a post.');
+
+        return redirect()->route('platform.post.list');
     }
 
     public function remove()
